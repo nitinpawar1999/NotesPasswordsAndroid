@@ -11,10 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.transition.Visibility;
 
-import com.example.notespasswords.LandingActivity;
 import com.example.notespasswords.R;
+import com.example.notespasswords.landingActivity;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Toast.makeText(this, "Already Signed in, Happy to see you again "+currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
@@ -99,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void updateUI(FirebaseUser user){
         if(user != null) {
-            Intent intent = new Intent(this, LandingActivity.class);
+            Intent intent = new Intent(this, landingActivity.class);
             startActivity(intent);
         }
     }
