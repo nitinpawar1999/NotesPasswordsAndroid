@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.notespasswords.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
@@ -24,11 +26,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class registerActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-    private static final String TAG = "registerActivity";
+public class RegisterActivity extends AppCompatActivity {
+
+    private static final String TAG = "RegisterActivity";
     FirebaseAuth mAuth;
+    FirebaseFirestore firebaseFirestore;
     String userNameString = "";
     String emailString = "";
     String passwordString = "";
@@ -38,6 +46,7 @@ public class registerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         TextInputLayout username = findViewById(R.id.userNameField);
         TextInputLayout email = findViewById(R.id.emailFieldR);
@@ -50,7 +59,7 @@ public class registerActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
-        username.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(username.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -67,7 +76,7 @@ public class registerActivity extends AppCompatActivity {
             }
         });
 
-        email.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(email.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -84,7 +93,7 @@ public class registerActivity extends AppCompatActivity {
             }
         });
 
-        password.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(password.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -126,7 +135,7 @@ public class registerActivity extends AppCompatActivity {
 
         registerBtn.setOnClickListener(v -> {
             if (userNameString == null || userNameString.isEmpty() || passwordString == null || passwordString.isEmpty() || emailString == null || emailString.isEmpty()) {
-                Toast.makeText(registerActivity.this, "Please enter Credentials",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Please enter Credentials",Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -145,12 +154,30 @@ public class registerActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            if (user != null) {
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("userName", userName);
+                                firebaseFirestore.collection("users").document(Objects.requireNonNull(user.getEmail())).set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
+
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(userName).build();
                             user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(registerActivity.this, "Registration Successful, you will be redirected to login page.",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "Registration Successful, you will be redirected to login page.",Toast.LENGTH_SHORT).show();
                                     final Handler handler = new Handler(Looper.getMainLooper());
+                                    mAuth.signOut();
                                     progressIndicator.setVisibility(View.INVISIBLE);
                                     handler.postDelayed(new Runnable() {
                                         @Override
@@ -160,11 +187,12 @@ public class registerActivity extends AppCompatActivity {
                                     }, 1000);
                                 }
                             });
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             progressIndicator.setVisibility(View.INVISIBLE);
-                            Toast.makeText(registerActivity.this, "Registration failed. "+ task.getException().getMessage(),
+                            Toast.makeText(RegisterActivity.this, "Registration failed. "+ task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -16,13 +16,13 @@ import com.example.notespasswords.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class passwordFragment extends Fragment {
+public class PasswordFragment extends Fragment {
 
-    private passwordViewModel passwordViewModel;
+    private PasswordViewModel passwordViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        passwordViewModel = new ViewModelProvider(this).get(passwordViewModel.class);
+        passwordViewModel = new ViewModelProvider(this).get(PasswordViewModel.class);
         View root = inflater.inflate(R.layout.fragment_password, container, false);
 
 

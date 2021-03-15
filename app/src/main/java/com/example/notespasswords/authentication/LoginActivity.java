@@ -13,11 +13,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notespasswords.R;
-import com.example.notespasswords.landingActivity;
+import com.example.notespasswords.LandingActivity;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,11 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         TextInputLayout password = findViewById(R.id.passwordField);
         TextView registerPage = findViewById(R.id.registerPage);
         registerPage.setOnClickListener(v -> {
-            Intent intent = new Intent(this, registerActivity.class);
+            Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        email.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(email.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -66,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        password.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(password.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -97,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void updateUI(FirebaseUser user){
         if(user != null) {
-            Intent intent = new Intent(this, landingActivity.class);
+            Intent intent = new Intent(this, LandingActivity.class);
             startActivity(intent);
         }
     }
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Log.d(TAG, "Signin Failed", task.getException());
                         progressIndicator.setVisibility(View.INVISIBLE);
-                        Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException().getMessage(),
+                        Toast.makeText(LoginActivity.this, "Authentication failed. "+ Objects.requireNonNull(task.getException()).getMessage(),
                                 Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }

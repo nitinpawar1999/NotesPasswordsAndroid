@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.notespasswords.ui.note.noteFragment"
+        android:name="com.example.notespasswords.ui.note.NoteFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_note" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.notespasswords.ui.password.passwordFragment"
+        android:name="com.example.notespasswords.ui.password.PasswordFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_password" />
 </navigation>

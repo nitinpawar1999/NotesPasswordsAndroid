@@ -12,10 +12,10 @@
         android:theme="@style/Theme.NotesPasswords"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".landingActivity"
+            android:name=".LandingActivity"
             android:label="@string/title_activity_landing"
             android:theme="@style/Theme.NotesPasswords.NoActionBar"/>
-        <activity android:name=".authentication.registerActivity" />
+        <activity android:name=".authentication.RegisterActivity" />
         <activity android:name=".authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

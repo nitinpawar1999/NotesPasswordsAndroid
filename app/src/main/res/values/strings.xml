@@ -28,4 +28,10 @@
     <string name="menu_slideshow">Passwords</string>
     <string name="logout">Logout</string>
     <string name="add_notes">Add Notes</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="create_new_note">Create New Note</string>
+    <string name="note_description">Note Description</string>
+    <string name="note_title">Note Title</string>
+    <string name="sample_text">sample text</string>
 </resources>

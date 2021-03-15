@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class passwordViewModel extends ViewModel {
+public class PasswordViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public passwordViewModel() {
+    public PasswordViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is password fragment");
     }
