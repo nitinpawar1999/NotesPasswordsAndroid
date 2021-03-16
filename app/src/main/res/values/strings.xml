@@ -39,4 +39,6 @@
     <string name="save_password">Save Password</string>
     <string name="site">Site</string>
     <string name="username">Username</string>
+    <string name="google_login">Google Login</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
 </resources>
