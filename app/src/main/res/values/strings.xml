@@ -34,4 +34,9 @@
     <string name="note_description">Note Description</string>
     <string name="note_title">Note Title</string>
     <string name="sample_text">sample text</string>
+    <string name="nitin_pawar">Nitin Pawar</string>
+    <string name="nitin_pawar150_gmail_com">nitin.pawar150@gmail.com</string>
+    <string name="save_password">Save Password</string>
+    <string name="site">Site</string>
+    <string name="username">Username</string>
 </resources>

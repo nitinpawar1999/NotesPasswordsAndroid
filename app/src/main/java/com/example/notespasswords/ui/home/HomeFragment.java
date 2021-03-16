@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,21 +22,15 @@ public class HomeFragment extends Fragment {
         final Button passwordBtn = root.findViewById(R.id.passwordsButton);
         Fragment fragmentNote = new NoteFragment();
         Fragment fragmentPassword = new PasswordFragment();
-        noteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        noteBtn.setOnClickListener(v -> {
 
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment, fragmentNote).addToBackStack(null).commit();
-            }
+            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.nav_host_fragment, fragmentNote).addToBackStack(null).commit();
         });
 
-        passwordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment, fragmentPassword).addToBackStack(null).commit();
-            }
+        passwordBtn.setOnClickListener(v -> {
+            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.nav_host_fragment, fragmentPassword).addToBackStack(null).commit();
         });
         return root;
     }

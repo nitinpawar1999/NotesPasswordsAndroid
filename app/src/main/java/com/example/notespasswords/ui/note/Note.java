@@ -23,6 +23,14 @@ public class Note {
         this.date = date;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -47,13 +55,12 @@ public class Note {
         this.date = date;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Note)) return false;
         Note note = (Note) o;
-        return Objects.equals(id, note.id);
+        return id.equals(note.id);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -62,11 +69,4 @@ public class Note {
         return Objects.hash(title, description, date);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

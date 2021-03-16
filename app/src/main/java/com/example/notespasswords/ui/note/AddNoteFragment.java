@@ -1,39 +1,25 @@
 package com.example.notespasswords.ui.note;
 
-import android.annotation.SuppressLint;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.pm.ActivityInfoCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.notespasswords.LandingActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.example.notespasswords.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -102,42 +88,32 @@ public class AddNoteFragment extends DialogFragment {
             }
         });
 
-        subBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        subBtn.setOnClickListener(v -> {
 
-                if( titleString.isEmpty() || descriptionString.isEmpty()){
-                    Toast.makeText(getContext(), "Enter Note Details",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!= null){
-                    Map<String, Object> noteData = new HashMap<>();
-                    noteData.put("userEmail", user.getEmail());
-                    noteData.put("noteTitle", titleString);
-                    noteData.put("noteDescription", descriptionString);
-                    noteData.put("time", new Date());
-                    db.collection("users").document(Objects.requireNonNull(user.getEmail())).collection("notes").add(noteData)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
+            if( titleString.isEmpty() || descriptionString.isEmpty()){
+                Toast.makeText(getContext(), "Enter Note Details",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if(user!= null){
+                Map<String, Object> noteData = new HashMap<>();
+                noteData.put("noteTitle", titleString);
+                noteData.put("noteDescription", descriptionString);
+                noteData.put("time", new Date());
+                db.collection("users").document(Objects.requireNonNull(user.getEmail())).collection("notes").add(noteData)
+                        .addOnSuccessListener(documentReference -> {
                             Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                             Toast.makeText(getContext(), "Note Saved",Toast.LENGTH_SHORT).show();
                             dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                        }).addOnFailureListener(e -> {
                             Log.w(TAG, "Error adding document", e);
                             Toast.makeText(getContext(), "Error Note Not Saved",Toast.LENGTH_SHORT).show();
                             dismiss();
-                        }
-                    });
-                }
+                        });
             }
-            }
+        }
         });
         return noteFragment;
     }
